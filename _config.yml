@@ -1,0 +1,19 @@
+# GitHub Pages Configuration
+# ==========================
+
+# Titre du site
+title: "🎮 Résolutions Arcade 2025"
+description: "Application de résolutions du Nouvel An style arcade rétro"
+
+# Thème (aucun, on utilise notre propre CSS)
+theme: null
+
+# Désactiver Jekyll pour un site statique pur
+plugins: []
+
+# Exclure des fichiers du build
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
+
