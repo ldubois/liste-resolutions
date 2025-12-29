@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Application de résolutions du Nouvel An style arcade rétro">
+    <meta name="theme-color" content="#0a0a12">
+    
+    <title>🎮 RÉSOLUTIONS ARCADE 2025 🎮</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+    
+    <!-- HUD -->
+    <div class="hud">
+        <div class="hud__score">
+            HIGH SCORE<br>
+            <span id="highScore" data-testid="high-score">0</span> RÉSOLUTIONS
+        </div>
+    </div>
+    
+    <!-- Decorative Joystick -->
+    <div class="joystick" aria-hidden="true"></div>
+    
+    <!-- FLIP BUTTON - Always visible -->
+    <button id="flipButton" class="flip-button" aria-label="Basculer entre résolutions et Pong">
+        <span class="flip-button__icon">🕹️</span>
+        <span class="flip-button__text">PONG!</span>
+    </button>
+    
+    <!-- MODE RÉSOLUTIONS -->
+    <main id="modeResolutions" class="container mode-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header__title">🎮 RÉSOLUTIONS 2025 🎮</h1>
+            <p class="header__subtitle">>>> INSERT COIN TO PLAY <<<</p>
+            <p class="header__credits">CRÉDITS: ∞ | VIES: 💖💖💖</p>
+        </header>
+        
+        <!-- Fun Buttons Bar -->
+        <section class="fun-buttons" aria-label="Boutons rigolos">
+            <button class="btn btn--fun btn--fun-1" data-action="funny" aria-label="Message rigolo">
+                🎲 RANDOM
+            </button>
+            <button class="btn btn--fun btn--fun-2" data-action="funny" aria-label="Message rigolo">
+                🎰 CHANCE
+            </button>
+            <button class="btn btn--fun btn--fun-3" data-action="funny" aria-label="Message rigolo">
+                🔮 DESTIN
+            </button>
+            <button class="btn btn--fun btn--fun-4" data-action="funny" aria-label="Message rigolo">
+                ⚡ WOW
+            </button>
+        </section>
+        
+        <!-- Add Resolution Form -->
+        <section class="panel panel--form" aria-labelledby="form-title">
+            <h2 id="form-title" class="panel__title panel__title--pink">
+                ⭐ NOUVELLE RÉSOLUTION ⭐
+            </h2>
+            
+            <form id="resolutionForm" class="form" novalidate>
+                <div class="form__group">
+                    <label class="form__label" for="title">🎯 TITRE DE LA QUÊTE</label>
+                    <input 
+                        type="text" 
+                        id="title" 
+                        class="form__input" 
+                        placeholder="Ex: Devenir un champion!"
+                        required
+                        maxlength="100"
+                        autocomplete="off"
+                    >
+                    <span class="form__error" data-error="title"></span>
+                </div>
+                
+                <div class="form__group">
+                    <label class="form__label" for="description">📜 DESCRIPTION DE LA MISSION</label>
+                    <textarea 
+                        id="description" 
+                        class="form__input form__input--textarea" 
+                        placeholder="Décris ta mission épique..."
+                        maxlength="500"
+                    ></textarea>
+                </div>
+                
+                <div class="form__row">
+                    <div class="form__group">
+                        <label class="form__label" for="targetDate">📅 DATE CIBLE</label>
+                        <input 
+                            type="date" 
+                            id="targetDate" 
+                            class="form__input"
+                            required
+                        >
+                        <span class="form__error" data-error="targetDate"></span>
+                    </div>
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="reminder">⏰ RAPPEL (JOURS AVANT)</label>
+                        <input 
+                            type="number" 
+                            id="reminder" 
+                            class="form__input"
+                            value="7" 
+                            min="1" 
+                            max="365"
+                        >
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn--add">
+                    🚀 LANCER LA RÉSOLUTION! 🚀
+                </button>
+            </form>
+        </section>
+        
+        <!-- Resolutions List -->
+        <section class="panel panel--list" aria-labelledby="list-title">
+            <div class="panel__header">
+                <h2 id="list-title" class="panel__title panel__title--cyan">
+                    🏆 TES QUÊTES EN COURS 🏆
+                </h2>
+                <div class="panel__score">
+                    SCORE: <span id="score" data-testid="score">0</span> PTS
+                </div>
+            </div>
+            
+            <div id="resolutionList" class="resolution-list" role="list" aria-live="polite">
+                <!-- Resolutions rendered here by JS -->
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 RÉSOLUTIONS ARCADE | CRÉÉ AVEC 💖 ET BEAUCOUP DE ☕</p>
+            <p>APPUIE SUR START POUR RECOMMENCER TA VIE</p>
+        </footer>
+    </main>
+    
+    <!-- MODE PONG -->
+    <div id="modePong" class="container mode-container is-hidden">
+        <header class="header header--pong">
+            <h1 class="header__title header__title--pong">🏓 ARCADE PONG 🏓</h1>
+            <p class="header__subtitle">PAUSE GAMING MÉRITÉE!</p>
+        </header>
+        
+        <div class="pong-container">
+            <canvas id="pongCanvas" class="pong-canvas"></canvas>
+            
+            <!-- Bouton Start overlay -->
+            <div id="pongStartOverlay" class="pong-start-overlay">
+                <button id="pongStartBtn" class="btn btn--pong-start">
+                    <span class="pong-start__icon">▶</span>
+                    <span class="pong-start__text">START GAME!</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="pong-instructions">
+            <p>🎮 Utilise <kbd>↑</kbd> <kbd>↓</kbd> ou <kbd>W</kbd> <kbd>S</kbd> pour bouger</p>
+            <p>⏸️ <kbd>ESPACE</kbd> pour pause | <kbd>ESC</kbd> pour quitter</p>
+            <p>📱 Sur mobile: glisse ton doigt!</p>
+        </div>
+    </div>
+    
+    <!-- Victory Overlay -->
+    <div id="victoryOverlay" class="overlay overlay--victory" role="dialog" aria-hidden="true">
+        <div class="overlay__content">
+            <div class="overlay__title">🎉 LEVEL UP! 🎉</div>
+            <div class="overlay__subtitle" id="victoryMessage">NOUVELLE RÉSOLUTION AJOUTÉE!</div>
+        </div>
+    </div>
+    
+    <!-- Funny Message Overlay -->
+    <div id="funnyOverlay" class="overlay overlay--funny" role="dialog" aria-hidden="true">
+        <div class="funny-bubble">
+            <div class="funny-bubble__content" id="funnyMessage"></div>
+            <button class="funny-bubble__close" aria-label="Fermer">✕</button>
+        </div>
+    </div>
+    
+    <!-- Edit Modal -->
+    <div id="editModal" class="overlay overlay--modal" role="dialog" aria-hidden="true" aria-labelledby="modal-title">
+        <div class="modal">
+            <h2 id="modal-title" class="modal__title">✏️ MODIFIER LA QUÊTE ✏️</h2>
+            
+            <form id="editForm" class="form" novalidate>
+                <input type="hidden" id="editId">
+                
+                <div class="form__group">
+                    <label class="form__label" for="editTitle">🎯 TITRE DE LA QUÊTE</label>
+                    <input 
+                        type="text" 
+                        id="editTitle" 
+                        class="form__input"
+                        required
+                        maxlength="100"
+                    >
+                </div>
+                
+                <div class="form__group">
+                    <label class="form__label" for="editDescription">📜 DESCRIPTION DE LA MISSION</label>
+                    <textarea 
+                        id="editDescription" 
+                        class="form__input form__input--textarea"
+                        maxlength="500"
+                    ></textarea>
+                </div>
+                
+                <div class="form__row">
+                    <div class="form__group">
+                        <label class="form__label" for="editTargetDate">📅 DATE CIBLE</label>
+                        <input type="date" id="editTargetDate" class="form__input" required>
+                    </div>
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="editReminder">⏰ RAPPEL (JOURS AVANT)</label>
+                        <input 
+                            type="number" 
+                            id="editReminder" 
+                            class="form__input"
+                            min="1" 
+                            max="365"
+                        >
+                    </div>
+                </div>
+                
+                <div class="modal__actions">
+                    <button type="button" class="btn btn--cancel" data-action="close-modal">
+                        ❌ ANNULER
+                    </button>
+                    <button type="submit" class="btn btn--save">
+                        💾 SAUVEGARDER
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+</body>
+</html>
