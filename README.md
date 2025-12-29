@@ -26,11 +26,11 @@
    git add .
    git commit -m "🎮 Résolutions Arcade"
    git branch -M main
-   git remote add origin https://github.com/TON_USERNAME/liste-resolutions.git
+   git remote add origin https://github.com/ldubois/liste-resolutions.git
    git push -u origin main
    ```
 3. Aller dans **Settings → Pages → Deploy from branch → main**
-4. Ton site sera sur : `https://TON_USERNAME.github.io/liste-resolutions/`
+4. Ton site sera sur : `https://ldubois.github.io/liste-resolutions/`
 
 ## 🧪 Tester en local
 
